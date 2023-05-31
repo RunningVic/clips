@@ -20,4 +20,7 @@ duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
     <p *ngIf="control.errors?.noMatch" class="text-red-400">
         Confirm Password must matches Password.
     </p>
+    <p *ngIf="control.errors?.emailTaken" class="text-red-400">
+        Email has been taken. Please try another email.
+    </p>
 </ng-container>
