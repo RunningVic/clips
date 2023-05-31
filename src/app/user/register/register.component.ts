@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import IUser from 'src/app/models/user.model';
+import { RegisterValidator } from '../validators/register-validator';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,7 @@ export class RegisterComponent {
     password: new FormControl('', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)]),
     confirmPassword: new FormControl('', [Validators.required]),
     phoneNumber: new FormControl('', [Validators.minLength(13), Validators.maxLength(13)])
-  });
+  }, [RegisterValidator.match('password', 'confirmPassword')]);
 
   showAlert = false;
 
