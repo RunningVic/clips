@@ -13,13 +13,15 @@
           </li>
           <ng-template #authLinks>
             <li>
-              <a class="px-2" routerLink="/manage" routerLinkActive="text-indigo-400" [routerLinkActiveOptions]="{ exact: true }">Manage</a>
+              <a class="px-2"
+              [queryParams]="{ sort: '1' }"
+              routerLink="/manage" routerLinkActive="text-indigo-400" [routerLinkActiveOptions]="{ exact: true }">Manage</a>
             </li>
             <li>
-              <a class="px-2" routerLink="/" routerLinkActive="text-indigo-400" [routerLinkActiveOptions]="{ exact: true }">Upload</a>
+              <a class="px-2" routerLink="/upload" routerLinkActive="text-indigo-400" [routerLinkActiveOptions]="{ exact: true }">Upload</a>
             </li>
             <li>
-              <a class="px-2" (click)="logout($event)">Logout</a>
+              <a class="px-2" (click)="this.auth.logout($event)">Logout</a>
             </li>
           </ng-template>
           <li>
