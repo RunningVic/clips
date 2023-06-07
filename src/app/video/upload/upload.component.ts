@@ -13,6 +13,13 @@ export class UploadComponent {
   isDragOver = false;
   file: File | null = null;
   nextStep = false;
+  showAlert = false;
+  alertColor = 'blue';
+  alertMsg = 'Please wait! Your clip is being uploaded.';
+  inSubmission = false;
+  percentage = 0;
+
+
   title = new FormControl('', {
     validators: [
       Validators.required,
@@ -44,10 +51,18 @@ export class UploadComponent {
   }
 
   uploadFile() {
+    this.showAlert = true;
+    this.alertColor = 'blue';
+    this.alertMsg = 'Please wait! Your clip is being uploaded.';
+    this.inSubmission = true;
+
     const clipFileName = uuid();
     // firebase does not check duplicate file
     // so we use uuid to generate unique id
     const clipPath = `clips/${clipFileName}.mp4`;
-    this.storage.upload(clipPath, this.file);
+    const task = this.storage.upload(clipPath, this.file);
+    task.percentageChanges().subscribe(progress => {
+      this.percentage = (progress as number) / 100
+    })
   }
 }
