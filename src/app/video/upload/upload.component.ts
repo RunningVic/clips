@@ -51,8 +51,11 @@ export class UploadComponent {
 
 
   storeFile($event: Event) {
+    
     this.isDragOver = false;
-    this.file = ($event as DragEvent).dataTransfer?.files.item(0) ?? null;
+    this.file = ($event as DragEvent).dataTransfer ?
+    ($event as DragEvent).dataTransfer?.files.item(0) ?? null :
+    ($event.target as HTMLInputElement).files?.item(0) ?? null;
 
     // mime type type/subtype
     if(!this.file || this.file.type !== 'video/mp4') {
