@@ -4,11 +4,12 @@ import IClip from '../models/clip.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { switchMap, of, map } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ClipService {
+export class ClipService implements Resolve<IClip | null> {
 
   public clipsCollection: AngularFirestoreCollection<IClip>
   pageClips: IClip[] = [];
@@ -17,7 +18,8 @@ export class ClipService {
   constructor(
     private db: AngularFirestore,
     private auth: AngularFireAuth,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private router: Router
   ) {
     this.clipsCollection = db.collection('clips');
   }
@@ -82,8 +84,22 @@ export class ClipService {
         docId: doc.id,
         ...doc.data()
       })
-    })
+    });
 
     this.pendingReq = false;
+  }
+
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    return this.clipsCollection.doc(route.params.id).get().pipe(
+      map(snapshot => {
+        const data = snapshot.data();
+        if (!data) {
+          this.router.navigate(['/'])
+          return null;
+        }
+
+        return data;
+      })
+    );
   }
 }
